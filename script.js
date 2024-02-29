@@ -1,3 +1,11 @@
+let playerLives = 5;
+let computerLives = 5;
+
+function updateLives() {
+    document.getElementById('player-lives').textContent = `Player Lives: ${playerLives}`;
+    document.getElementById('computer-lives').textContent = `Computer Lives: ${computerLives}`;
+}
+
 function getComputerChoice() {
     const randomNumber = Math.floor(Math.random() * 3 + 1);
     switch (randomNumber) {
@@ -16,49 +24,37 @@ function playRound(playerSelection, computerSelection) {
         (playerSelection === 'scissors' && computerSelection === 'paper') ||
         (playerSelection === 'paper' && computerSelection === 'rock')
     ) {
-        return "you win"
+        return "You win";
     } else if (
         (playerSelection === 'scissors' && computerSelection === 'rock') ||
         (playerSelection === 'paper' && computerSelection === 'scissors') ||
         (playerSelection === 'rock' && computerSelection === 'paper')
     ) {
-        return "you lose"
+        return "You lose";
     } else {
-        return "it's a tie"
+        return "It's a tie";
     }
 }
 
-function playGame() {
-    let playerLives = 5;
-    let computerLives = 5;
-
-    while (playerLives > 0 && computerLives > 0) {
-        let playerChoice = prompt("Rock, Paper, Scissors?:");
-        let computerChoice = getComputerChoice();
-        
-        console.log("You chose: " + playerChoice);
-        console.log("Computer chose: " + computerChoice);
-        
-        let result = playRound(playerChoice.toLowerCase(), computerChoice);
-        console.log(result);
-
-        if (result === "you win") {
-            computerLives--;
-        } else if (result === "you lose") {
-            playerLives--;
-        }
+function handlePlayerChoice(playerSelection) {
+    let computerSelection = getComputerChoice();
+    let result = playRound(playerSelection, computerSelection);
+    document.getElementById('result').textContent = result;
+    if (result === "You win") {
+        computerLives--;
+    } else if (result === "You lose") {
+        playerLives--;
     }
 
-    console.log("Player lives: " + playerLives);
-    console.log("Computer lives: " + computerLives);
-
-    if (playerLives > computerLives) {
-        console.log("Congratulations! You win the game!");
-    } else if (playerLives < computerLives) {
-        console.log("Sorry, you lose the game. Better luck next time!");
-    } else {
-        console.log("It's a tie game!");
-    }
+    updateLives();
 }
 
-playGame();
+let btn1 = document.querySelector('#rock');
+let btn2 = document.querySelector('#paper');
+let btn3 = document.querySelector('#scissors');
+
+btn1.addEventListener('click', () => handlePlayerChoice('rock'));
+btn2.addEventListener('click', () => handlePlayerChoice('paper'));
+btn3.addEventListener('click', () => handlePlayerChoice('scissors'));
+
+updateLives();
